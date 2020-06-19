@@ -1,3 +1,3 @@
-import Query from './query';
+import UserQuery from './query';
 
-export default Query;
+export default UserQuery;
