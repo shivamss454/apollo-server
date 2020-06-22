@@ -3,6 +3,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
+import UserAPI from './datasource';
 
 export default class Server {
   constructor(config) {
@@ -42,7 +43,10 @@ export default class Server {
      setUpApolloServer = (schema) => {
        const { app } = this;
 
-       this.Server = new ApolloServer({ ...schema });
+       this.Server = new ApolloServer({
+         ...schema,
+         dataSources: () => ({ userAPI: new UserAPI() }),
+       });
        this.Server.applyMiddleware({ app });
        this.httpServer = createServer(app);
        this.Server.installSubscriptionHandlers(this.httpServer);
