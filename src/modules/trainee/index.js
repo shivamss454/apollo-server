@@ -1,4 +1,5 @@
 import TraineeQuery from './query';
 import TraineeMutation from './mutation';
+import TraineeSubscription from './subscription';
 
-export { TraineeQuery, TraineeMutation };
+export { TraineeQuery, TraineeMutation, TraineeSubscription };

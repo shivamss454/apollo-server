@@ -2,7 +2,7 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import bodyParser from 'body-parser';
-// import graphqlHTTP from 'express-graphql';
+import { createServer } from 'http';
 
 export default class Server {
   constructor(config) {
@@ -17,8 +17,8 @@ export default class Server {
     };
 
     run = () => {
-      const { app, config: { port, env } } = this;
-      app.listen(port, (err) => {
+      const { config: { port, env } } = this;
+      this.httpServer.listen(port, (err) => {
         if (err) throw err;
         console.log('app is running successfully on ', { port }, { env });
       });
@@ -36,14 +36,16 @@ export default class Server {
       app.get('/healthcheck', (req, res) => {
         console.log('inside health check');
         res.send('I am ok');
-        app.get('/graphql');
       });
     };
 
-     setUpApolloServer = async (schema) => {
+     setUpApolloServer = (schema) => {
        const { app } = this;
 
        this.Server = new ApolloServer({ ...schema });
        this.Server.applyMiddleware({ app });
+       this.httpServer = createServer(app);
+       this.Server.installSubscriptionHandlers(this.httpServer);
+       this.run();
      };
 }
