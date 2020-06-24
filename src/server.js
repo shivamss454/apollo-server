@@ -3,7 +3,7 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
-import UserAPI from './datasource';
+import { UserAPI, TraineeAPI } from './datasource';
 
 export default class Server {
   constructor(config) {
@@ -45,7 +45,16 @@ export default class Server {
 
        this.Server = new ApolloServer({
          ...schema,
-         dataSources: () => ({ userAPI: new UserAPI() }),
+         dataSources: () => ({
+           userAPI: new UserAPI(),
+           traineeAPI: new TraineeAPI(),
+         }),
+         context: ({ req }) => {
+           if (req) {
+             return { token: req.headers.authorization };
+           }
+           return {};
+         },
        });
        this.Server.applyMiddleware({ app });
        this.httpServer = createServer(app);

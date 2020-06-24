@@ -1,3 +1,4 @@
 import UserAPI from './User';
+import TraineeAPI from './Trainee';
 
-export default UserAPI;
+export { UserAPI, TraineeAPI };
