@@ -1,6 +1,6 @@
 type Query {
     getMe: User!
-    getTrainee(data: GetUserData): [User]!
+    getTrainee(data: GetUserData): Data!
 }
 
 type Mutation {
