@@ -28,12 +28,12 @@ export default {
     try {
       const {
         payload: {
-          name, email, password, id,
+          name, email, id,
         },
       } = args;
       const { dataSources: { traineeAPI } } = context;
       const res = await traineeAPI.updateTrainee({
-        name, email, password, id,
+        name, email, id,
       });
       pubsub.publish(constant.subscriptions.TRAINEE_UPDATED, { traineeupdated: res.data.id });
       return res.data.id;

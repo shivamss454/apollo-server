@@ -13,7 +13,6 @@ password: String!
 input UpdateUserInput {
 name: String!
 email: String!
-password: String!
 id: ID!
 }
 
