@@ -1,0 +1,49 @@
+{
+  "name": "apollo-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx babel-node extra",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./src",
+    "lint:fix": "npm run lint --fix",
+    "start": "npm run nodemon",
+    "start:src": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
+    "nodemon": "nodemon --exec babel-node src",
+    "plugins": "@babel/plugin-proposal-class-properties",
+    "precommit": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivamss454/apollo-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivamss454/apollo-server/issues"
+  },
+  "homepage": "https://github.com/shivamss454/apollo-server#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/node": "^7.10.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-plugin-import": "^2.21.2",
+    "husky": "^4.2.5",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "@mobylogix/merge-graphql-schemas": "^1.5.4",
+    "apollo-server-express": "^2.14.5",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.1.0",
+    "merge-graphql-schemas": "^1.7.8"
+  }
+}
