@@ -3,4 +3,5 @@ import configuration from './config/configuration';
 import Schema from './modules';
 
 const server = new Server(configuration);
-server.bootstrap().run().setUpApolloServer(Schema);
+server.bootstrap();
+server.setUpApolloServer(Schema);
