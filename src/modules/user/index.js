@@ -1,3 +1,4 @@
 import UserQuery from './query';
+import UserMutation from './mutation';
 
-export default UserQuery;
+export { UserQuery, UserMutation };
