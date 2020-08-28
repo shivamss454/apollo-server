@@ -1,8 +1,17 @@
+/* eslint-disable no-invalid-this */
+/* eslint-disable no-unused-vars */
+import { UserInputError } from 'apollo-server';
+
 export default {
-  getMyProfile: () => ({
-    id: 101,
-    name: 'shivam sharma',
-    email: 'shivam.sharma1@successive.tech',
-    role: 'trainee',
-  }),
+  getMe: async (parent, args, context) => {
+    try {
+      const { dataSources: { userAPI } } = context;
+      const res = await userAPI.getMe();
+      return res.data;
+    } catch (error) {
+      return new UserInputError('invalid Arguments', {
+        invalidArgs: Object.keys(args),
+      });
+    }
+  },
 };

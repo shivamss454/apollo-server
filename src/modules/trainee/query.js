@@ -1,11 +1,18 @@
-/* eslint-disable no-unused-vars */
-import userInstance from '../../service/user';
+/* eslint-disable no-invalid-this */
+import { UserInputError } from 'apollo-server';
 
 export default {
-  getAllTrainees: () => userInstance.getAllUsers(),
-  getTrainee: (parent, args, context) => {
-    const { id } = args;
-    return userInstance.getUser(id);
+  getTrainee: async (parent, args, context) => {
+    try {
+      const { data: { skip, limit } } = args;
+      const { dataSources: { traineeAPI } } = context;
+      const res = await traineeAPI.getTrainee({ skip, limit });
+      return res.data;
+    } catch (error) {
+      return new UserInputError('invalid Arguments', {
+        invalidArgs: Object.keys(args),
+      });
+    }
   },
 
 };

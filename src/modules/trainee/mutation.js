@@ -1,25 +1,59 @@
 /* eslint-disable no-unused-vars */
-import userInstance from '../../service/user';
+import { UserInputError } from 'apollo-server';
 import pubsub from '../pubsub';
 import constant from '../../lib/constant';
 
 export default {
-  createTrainee: (parent, args, context) => {
-    const { user } = args;
-    const createduser = userInstance.createUser(user);
-    pubsub.publish(constant.subscriptions.TRAINEE_CREATED, { traineeCreated: createduser });
-    return createduser;
+  createTrainee: async (parent, args, context) => {
+    try {
+      const {
+        payload: {
+          name, email, password,
+        },
+      } = args;
+      const { dataSources: { traineeAPI } } = context;
+      const res = await traineeAPI.createTrainee({
+        name, email, password,
+      });
+      pubsub.publish(constant.subscriptions.TRAINEE_CREATED, { traineeCreated: res.data });
+      return res.data;
+    } catch (error) {
+      return new UserInputError('invalid arguments', {
+        invalidArgs: Object.keys(args),
+      });
+    }
   },
-  updateTrainee: (parent, args, context) => {
-    const { id, email, role } = args;
-    const updateduser = userInstance.updateUser(id, email, role);
-    pubsub.publish(constant.subscriptions.TRAINEE_UPDATED, { traineeUpdated: updateduser });
-    return updateduser;
+
+  updateTrainee: async (parent, args, context) => {
+    try {
+      const {
+        payload: {
+          name, email, id,
+        },
+      } = args;
+      const { dataSources: { traineeAPI } } = context;
+      const res = await traineeAPI.updateTrainee({
+        name, email, id,
+      });
+      pubsub.publish(constant.subscriptions.TRAINEE_UPDATED, { traineeupdated: res.data.id });
+      return res.data.id;
+    } catch (error) {
+      return new UserInputError('invalid arguments', {
+        invalidArgs: Object.keys(args),
+      });
+    }
   },
-  deleteTrainee: (parent, args, context) => {
-    const { id } = args;
-    const deleteduser = userInstance.deleteUser(id);
-    pubsub.publish(constant.subscriptions.TRAINEE_DELETED, { traineeDeleted: deleteduser });
-    return deleteduser;
+  deleteTrainee: async (parent, args, context) => {
+    try {
+      const { id } = args;
+      const { dataSources: { traineeAPI } } = context;
+      const res = await traineeAPI.deleteTrainee(id);
+      pubsub.publish(constant.subscriptions.TRAINEE_DELETED, { traineeDeleted: res.data.id });
+      return res.data.id;
+    } catch (error) {
+      return new UserInputError('invalid arguments', {
+        invalidArgs: Object.keys(args),
+      });
+    }
   },
 };
